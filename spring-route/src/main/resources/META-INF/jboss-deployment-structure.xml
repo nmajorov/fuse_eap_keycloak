@@ -1,0 +1,48 @@
+<jboss-deployment-structure>
+    <deployment>
+        <!--
+         Exclude web services subsystem so the implicit dependencies will not 
+            be added 
+            have to do it to enable JAX-RS 2.0 (restasy 2.0 implement it)
+            in EAP 6.4
+            
+            -->
+        <exclude-subsystems>
+            <subsystem name="webservices" />
+
+            <subsystem name="jaxrs" />
+        </exclude-subsystems>
+        <exclusions>
+
+
+            <module name="javaee.api" />
+            <module name="org.jboss.resteasy.resteasy-jackson-provider" />
+            <module name="org.jboss.resteasy.resteasy-jaxrs" />
+            <module name="org.jboss.resteasy.resteasy-cdi" />
+            <module name="org.jboss.resteasy.resteasy-atom-provider" />
+            <module name="org.jboss.resteasy.resteasy-hibernatevalidator-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-jaxb-provider" />
+            <module name="org.jboss.resteasy.resteasy-jettison-provider" />
+            <module name="org.jboss.resteasy.resteasy-jsapi" />
+            <module name="org.jboss.resteasy.resteasy-multipart-provider" />
+            <module name="org.jboss.resteasy.resteasy-yaml-provider" />
+            <module name="javax.ws.rs.api" />
+            <module name="javax.ws.rs.core" />
+            <module name="org.jboss.as.jaxrs" />
+            <module name="javax.api" />
+        </exclusions>
+        <dependencies>
+            <module name="javaee.api">
+                <imports>
+                    <exclude-set>
+                        <path name="javax/ws/rs" />
+                        <path name="javax/ws/rs/core" />
+                        <path name="javax/ws/rs/ext" />
+                    </exclude-set>
+                </imports>
+            </module>
+        </dependencies>
+    </deployment>
+
+</jboss-deployment-structure>

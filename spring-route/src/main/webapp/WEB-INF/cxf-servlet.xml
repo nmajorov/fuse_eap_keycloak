@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:cxf-core="http://cxf.apache.org/core" xmlns:p="http://cxf.apache.org/policy"
+    xmlns:sec="http://cxf.apache.org/configuration/security" xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:http="http://cxf.apache.org/transports/http/configuration"
+
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd  
+       http://cxf.apache.org/configuration/security  http://cxf.apache.org/schemas/configuration/security.xsd">
+
+    <bean
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
+    <cxf-core:bus>
+        <cxf-core:features>
+            <p:policies />
+            <cxf-core:logging />
+        </cxf-core:features>
+    </cxf-core:bus>
+
+
+    <bean class="com.redhat.consulting.ws.CustomSamlValidator" id="saml1CallbackHandler" />
+
+    <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor" id="inEncyptInterceptor">
+        <constructor-arg>
+            <map>
+                <!-- Use this action order for local clients -->
+                <entry key="action" value="SAMLTokenUnsigned Signature" />
+
+                <entry key="signatureVerificationPropFile" value="insecurity.properties" />
+
+                <entry key="wss4j.processor.map">
+                    <map key-type="javax.xml.namespace.QName">
+                        <entry>
+                            <key>
+                                <bean class="javax.xml.namespace.QName">
+                                    <constructor-arg
+                                        value="urn:oasis:names:tc:SAML:1.0:assertion" />
+                                    <constructor-arg value="Assertion" />
+                                </bean>
+                            </key>
+                            <ref bean="saml1CallbackHandler" />
+                        </entry>
+
+                    </map>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+
+    <cxf:cxfEndpoint id="echoService" address="/EchoImpl" serviceClass="com.redhat.consulting.ws.Echo">
+        <cxf:inInterceptors>
+            <ref bean="inEncyptInterceptor" />
+        </cxf:inInterceptors>
+    </cxf:cxfEndpoint>
+
+
+    <bean class="com.redhat.consulting.fusequickstarts.eap.Client" id="restClient">
+        <property name="url" value="http://localhost:8181/hello" />
+        <property name="tokenUrl" value="http://ssodemo.niko-cloud.ch:8080/auth/realms/sample/protocol/openid-connect/token" />
+    </bean>
+
+
+    <camelContext id="my_context" xmlns="http://camel.apache.org/schema/spring">
+        <route id="start">
+            <from uri="cxf:bean:echoService" />
+            <log message="Also Got ${body}" loggingLevel="INFO" />
+            <bean ref="restClient" method="callRest" id="bean1"/>
+        </route>
+    </camelContext>
+
+
+
+
+</beans>

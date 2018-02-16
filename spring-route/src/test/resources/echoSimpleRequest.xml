@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.consulting.redhat.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:echo>
+         <arg0>Niko</arg0>
+      </ws:echo>
+   </soapenv:Body>
+</soapenv:Envelope>
+

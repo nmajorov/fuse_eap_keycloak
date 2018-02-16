@@ -1,0 +1,8 @@
+{
+  "realm": "sample",
+  "auth-server-url": "http://ssodemo.niko-cloud.ch:8080/auth",
+  "ssl-required": "external",
+  "resource": "wildlfly-swarm",
+  "public-client": true,
+  "use-resource-role-mappings": true
+}

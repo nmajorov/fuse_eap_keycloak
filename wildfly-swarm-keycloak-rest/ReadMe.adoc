@@ -1,0 +1,40 @@
+== Restful web-service with http://wildfly-swarm.io/[WildFly Swarm]
+
+
+this project demonstrate Restful service secured with WildFly Swarm
+and keycloak
+
+the keycloak definition json can be found in ** src/main/resources ** directory.
+
+You need to configure sample realm in keycloak.
+
+am example json configuration for RedHat SSO 7.1 reaml client:
+
+[source,javascript]
+----
+{
+  "realm": "sample",
+  "auth-server-url": "http://ssodemo.niko-cloud.ch:8080/auth",
+  "ssl-required": "external",
+  "resource": "wildlfly-swarm",
+  "public-client": true,
+  "use-resource-role-mappings": true
+}
+----
+
+define in main class protected resources:
+
+
+
+[source,java]
+----
+
+import org.wildfly.swarm.keycloak.Secured;
+
+
+ deployment.as(Secured.class)
+         .protect()
+         .withMethod( "GET" )
+         .withRole( "users" );
+
+----

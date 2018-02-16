@@ -1,0 +1,34 @@
+== Restful service with WildFly Swarm
+
+build project with command:
+
+----
+  mvn clean package
+----
+
+Run project with command:
+
+----
+    mvn wildfly-swarm:run
+----
+
+it will start RESTful service on port 8181.
+
+you can test service with a command:
+
+----
+
+    curl -v localhost:8181/hello
+
+----
+
+
+Start a keycloack instance
+
+
+docker run  -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=Geneva2018! -p 8080:8080 jboss/keycloak 
+
+
+
+
+

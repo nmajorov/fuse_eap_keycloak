@@ -1,5 +1,17 @@
 = Example of web-service transformation and modernization  with FUSE and Keycloak
 
+
+:toc:
+:toc-placement!:
+
+
+toc::[]
+
+
+author: Nikolaj Majorov <nmajorov (at) redhat.com>
+
+
+== Architecture
 The idea of example is to show how to modernize and transform
 SOAP web-service secured with http://saml.xml.org/saml-specifications[WS SAML V1.1]  to be able to talk with
 modern Restful web-service and authenticate each call to Restful web service with
@@ -7,8 +19,6 @@ http://openid.net/connect/[OpenID Connect] protocoll, so that each SOAP client w
 SOAP response from Restful web-service.
 
 
-
-== Architecture
 Request flow:
 
 1. In Fuse EAP a camel route will be deployed with cxf-ws service endpoint and it can consume WS SAML 1.1 request.
